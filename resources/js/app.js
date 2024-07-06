@@ -27,7 +27,7 @@ import Badge from 'primevue/badge';
 
 ///end of primevue components
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || 'Club Manager';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -48,10 +48,10 @@ createInertiaApp({
             .component('InputNumber',InputNumber)
             .directive('Tooltip',Tooltip)
             .component('MultiSelect',MultiSelect)
-            .component('Dropdown',Dropdown)
+            .component('Select',Select)
             .component('Pagination',Pagination)
             .component('SearchBox',SearchBox)
-            .component('Calendar',Calendar)
+            .component('DatePicker',DatePicker)
             .component('Password',Password)
             .component('Badge',Badge)
             .mount(el);
