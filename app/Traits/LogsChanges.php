@@ -1,9 +1,7 @@
-<?php
-// app/Traits/LogsChanges.php
+<?php // app/Traits/LogsChanges.php
 namespace App\Traits;
 
 use App\Models\ChangeLog;
-use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -12,13 +10,10 @@ trait LogsChanges
     public static function bootLogsChanges()
     {
         static::updated(function ($model) {
-            $settings = Setting::where('table_name', $model->getTable())
-                               ->where('log_changes', true)
-                               ->pluck('field_name')
-                               ->toArray();
+            $loggableFields = self::getLoggableFields($model->getTable());
 
             foreach ($model->getDirty() as $field => $newValue) {
-                if (in_array($field, $settings)) {
+                if (in_array($field, $loggableFields)) {
                     $oldValue = $model->getOriginal($field);
                     ChangeLog::create([
                         'table_name' => $model->getTable(),
@@ -33,13 +28,10 @@ trait LogsChanges
         });
 
         static::created(function ($model) {
-            $settings = Setting::where('table_name', $model->getTable())
-                               ->where('log_changes', true)
-                               ->pluck('field_name')
-                               ->toArray();
+            $loggableFields = self::getLoggableFields($model->getTable());
 
             foreach ($model->attributesToArray() as $field => $newValue) {
-                if (in_array($field, $settings)) {
+                if (in_array($field, $loggableFields)) {
                     ChangeLog::create([
                         'table_name' => $model->getTable(),
                         'field_name' => $field,
@@ -53,13 +45,10 @@ trait LogsChanges
         });
 
         static::deleted(function ($model) {
-            $settings = Setting::where('table_name', $model->getTable())
-                               ->where('log_changes', true)
-                               ->pluck('field_name')
-                               ->toArray();
+            $loggableFields = self::getLoggableFields($model->getTable());
 
             foreach ($model->attributesToArray() as $field => $oldValue) {
-                if (in_array($field, $settings)) {
+                if (in_array($field, $loggableFields)) {
                     ChangeLog::create([
                         'table_name' => $model->getTable(),
                         'field_name' => $field,
@@ -73,5 +62,23 @@ trait LogsChanges
         });
     }
 
+    private static function getLoggableFields($table)
+    {
+        // This should be replaced with the actual logic to get loggable fields
+        // For example, it could be a static list, a database query, or a call to a service
+        // return ['field1', 'field2', 'field3'];
 
+        // Example of dynamic retrieval (replace this with your actual implementation)
+        $settings = \App\Models\Setting::where('table_name', $table)
+                           ->where('log_changes', true)
+                           ->get();
+
+        $loggableFields = [];
+        foreach ($settings as $setting) {
+            // Assuming you have a method in your Setting model to get loggable fields dynamically
+            $loggableFields = array_merge($loggableFields, $setting->getLoggableFields());
+        }
+
+        return $loggableFields;
+    }
 }

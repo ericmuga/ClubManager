@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\{Meeting, User};
 use Illuminate\Http\Request;
-// use App\Http\Requests\StoreMeetingRequest;
-// use App\Http\Requests\UpdateMeetingRequest;
+use App\Http\Requests\StoreMeetingRequest;
+use App\Http\Requests\UpdateMeetingRequest;
 
 class MeetingController extends Controller
 {
@@ -26,23 +26,18 @@ class MeetingController extends Controller
     }
     public function index()
     {
-        //
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreMeetingRequest $request)
     {
-        //
+         Meeting::create($request->all());
+         return $this->index();
     }
 
     /**

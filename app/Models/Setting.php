@@ -10,8 +10,8 @@ class Setting extends Model
 {
     use HasFactory,LogsChanges;
 
-     protected $fillable = [
-        'table_name', 'loggable_fields',
+       protected $fillable = [
+        'table_name', 'field_name', 'log_changes',
     ];
 
     protected $casts = [

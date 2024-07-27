@@ -12,4 +12,8 @@ class Meeting extends Model
     use LogsChanges;
 
     protected $guarded=['id'];
+
+   protected $fillable = [
+        'type', 'description', 'meeting_date', 'venue', 'topic', 'detail', 'host', 'uuid', 'meeting_no', 'official_start_time', 'official_end_time'
+    ];
 }

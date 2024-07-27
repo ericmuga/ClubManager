@@ -15,13 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('status');
-            $table->string('user_type');//member,guest,inductee
-            $table->string('nationality')->default('');
-            $table->string('gender');
+            $table->string('status')->default('active');
+            $table->string('user_type')->default('guest');//member,guest,inductee
+            $table->string('nationality')->default('KE');
+            $table->string('gender')->default('M');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->unsignedBigInteger('classification_id')->references('id')->on('classifications')->nullable();
+            $table->string('avatar')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('member_no')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

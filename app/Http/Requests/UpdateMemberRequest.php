@@ -11,7 +11,7 @@ class UpdateMemberRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class UpdateMemberRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+                'email'=>'email|unique:users,email,except,id',
+                'phone'=>'unique:users,phone,except,id',
+                'member_no'=>'unique:table,column,except,id'
         ];
     }
 }

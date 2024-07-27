@@ -22,7 +22,17 @@ class StoreMeetingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'type' => 'required|string',
+            'description' => 'required|string',
+            'meeting_date' => 'required|date',
+            'venue' => 'nullable|string',
+            'topic' => 'nullable|string',
+            'detail' => 'nullable|string',
+            'host' => 'nullable|string',
+            'uuid' => 'nullable|string',
+            'meeting_no' => 'required|string',
+            'official_start_time' => 'required|date_format:H:i',
+            'official_end_time' => 'required|date_format:H:i',
         ];
     }
 }

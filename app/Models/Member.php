@@ -19,4 +19,6 @@ class Member extends User
             $model->user_type = 'member';
         });
     }
+    protected $fillable=['name', 'email', 'nationality', 'gender', 'member_no', 'phone'];
+
 }

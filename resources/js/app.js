@@ -9,21 +9,24 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 // primevue components
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
-import 'primevue/resources/themes/lara-light-indigo/theme.css';
-import 'primevue/resources/primevue.min.css';
+// import 'primevue/resources/themes/lara-light-indigo/theme.css';
+// import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
 import MultiSelect from 'primevue/multiselect';
 import Toolbar from 'primevue/toolbar';
 import Button from 'primevue/button';
-import Pagination from '@/Components/Pagination.vue'
+// import Pagination from '@/Components/Pagination.vue'
 import InputText from 'primevue/inputtext'
 import InputNumber from 'primevue/inputnumber'
 import Tooltip from 'primevue/tooltip';
 import Checkbox from 'primevue/checkbox';
-import Calendar from 'primevue/calendar';
-import Dropdown from 'primevue/dropdown';
+import DatePicker from 'primevue/datePicker';
+import DataTable from 'primevue/datatable';
+import Select from 'primevue/select';
 import Password from 'primevue/password';
 import Badge from 'primevue/badge';
+import FileUpload from 'primevue/fileupload';
+import Dialog from 'primevue/dialog';
 
 ///end of primevue components
 
@@ -45,13 +48,16 @@ createInertiaApp({
             .component('Checkbox',Checkbox)
             .component('Button',Button)
             .component('InputText',InputText)
+            .component('Dialog',Dialog)
             .component('InputNumber',InputNumber)
             .directive('Tooltip',Tooltip)
             .component('MultiSelect',MultiSelect)
             .component('Select',Select)
-            .component('Pagination',Pagination)
-            .component('SearchBox',SearchBox)
+            .component('FileUpload',FileUpload)
+            // .component('Pagination',Pagination)
+            // .component('SearchBox',SearchBox)
             .component('DatePicker',DatePicker)
+            .component('DataTable',DataTable)
             .component('Password',Password)
             .component('Badge',Badge)
             .mount(el);
