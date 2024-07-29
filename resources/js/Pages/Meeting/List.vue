@@ -23,9 +23,9 @@ onMounted(() => {
   meetingsArray.value=props.meetings;
 });
 
-const showModal=ref(false);
+// const showModal=ref(false);
 
-const { props } = usePage();
+// const { props } = usePage();
 const meetings = ref(props.meetings);
 
 const form = useForm({
