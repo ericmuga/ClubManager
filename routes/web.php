@@ -50,3 +50,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+
+Route::resource('club-settings', App\Http\Controllers\ClubSettingController::class)->only('index', 'store');
+
+

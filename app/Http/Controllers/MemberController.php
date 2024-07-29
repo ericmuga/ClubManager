@@ -6,19 +6,19 @@ use App\Models\{Member,Guest,User};
 use App\Http\Requests\StoreMemberRequest;
 use App\Http\Requests\UpdateMemberRequest;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use App\Imports\MembersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\TemplateExport;
 use Faker\Factory as Faker;
 use App\Services\ModelService;
+use App\Traits\UploadsFiles;
 
 
 class MemberController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    use UploadsFiles;
 
      protected $modelService;
     public function index()
@@ -60,38 +60,15 @@ class MemberController extends Controller
         return Excel::download(new TemplateExport($this->showFillableProperties()), 'member_template.xlsx');
     }
 
-    private function getAvatarURL(Request $request)
+
+
+
+    public function store(StoreMemberRequest $request): Response
     {
-        $path = '';
-        if ($request->hasFile('avatar')) {
-            $avatar = $request->file('avatar');
-            $path = $avatar->store('avatars', 'public');
-        } else {
-            $faker = Faker::create();
-            $path = $faker->imageUrl(640, 480, 'people'); // Generates a random avatar URL
-        }
-        return $path;
-    }
-
-
-
-    public function store(Request $request)
-    {
-
-              User::create([
-                                'name'=>$request->name,
-                                'email'=>$request->email,
-                                'password'=>bcrypt(Str::random(6)),
-                                'phone'=>$request->phone,
-                                'member_no'=>$request->member_no,
-                                'nationality'=>$request->nationality,
-                                'gender'=>$request->gender,
-                                'avatar'=>$this->getAvatarURL($request),
-                                "user_type"=>'member'
-                            ]);
-
-
-          return $this->index();
+         $validated=$request->validated();
+         $validated['logo'] = $this->uploadFile($request, 'avatar', 'avatar');
+         User::create($validated);
+         return redirect()->route('members.index');
     }
 
 

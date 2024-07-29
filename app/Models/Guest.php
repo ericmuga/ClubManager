@@ -11,10 +11,7 @@ class Guest extends User
     use HasFactory;
 
 
-    public function Classification ()
-    {
-        return $this->belongsTo(Classification::class);
-    }
+
 
     protected static function booted()
     {

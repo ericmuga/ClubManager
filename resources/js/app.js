@@ -9,25 +9,26 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 // primevue components
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
-// import 'primevue/resources/themes/lara-light-indigo/theme.css';
-// import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
 import MultiSelect from 'primevue/multiselect';
 import Toolbar from 'primevue/toolbar';
 import Button from 'primevue/button';
-// import Pagination from '@/Components/Pagination.vue'
 import InputText from 'primevue/inputtext'
 import InputNumber from 'primevue/inputnumber'
 import Tooltip from 'primevue/tooltip';
 import Checkbox from 'primevue/checkbox';
-import DatePicker from 'primevue/datePicker';
+// import DatePicker from 'primevue/datePicker';
 import DataTable from 'primevue/datatable';
 import Select from 'primevue/select';
 import Password from 'primevue/password';
 import Badge from 'primevue/badge';
 import FileUpload from 'primevue/fileupload';
 import Dialog from 'primevue/dialog';
-
+import Tabs from 'primevue/tabs';
+import TabList from 'primevue/tablist';
+import Tab from 'primevue/tab';
+import TabPanels from 'primevue/tabpanels';
+import TabPanel from 'primevue/tabpanel';
 ///end of primevue components
 
 const appName = import.meta.env.VITE_APP_NAME || 'Club Manager';
@@ -54,12 +55,15 @@ createInertiaApp({
             .component('MultiSelect',MultiSelect)
             .component('Select',Select)
             .component('FileUpload',FileUpload)
-            // .component('Pagination',Pagination)
-            // .component('SearchBox',SearchBox)
-            .component('DatePicker',DatePicker)
+            // .component('DatePicker',DatePicker)
             .component('DataTable',DataTable)
             .component('Password',Password)
             .component('Badge',Badge)
+            .component('Tab',Tab)
+            .component('Tabs',Tabs)
+            .component('TabList',TabList)
+            .component('TabPanels',TabPanels)
+            .component('TabPanel',TabPanel)
             .mount(el);
     },
     progress: {

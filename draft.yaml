@@ -1,0 +1,29 @@
+models:
+  ClubSetting:
+    club_name: string:50
+    change_log_active: boolean nullable
+    default_currency: string:5 nullable
+    logo: string:100 nullable
+    dispatch_emails: boolean nullable
+    active: boolean nullable
+    address: string:100 nullable
+    telephone: string:100 nullable
+    email: string:100 nullable
+    slogan: string:100 nullable
+    pin: string:100 nullable
+
+
+
+controllers:
+  ClubSetting:
+   index:
+      query: all
+   store:
+      validate: club_name
+      save: club_setting
+      redirect: clubSetting.index
+
+   show:
+     render: club_setting
+
+  # ...
