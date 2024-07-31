@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
+use Carbon\Carbon;
 class Meeting extends Model
 {
     use HasFactory;
@@ -46,4 +46,19 @@ class Meeting extends Model
     {
         return $this->belongsToMany(Guest::class);
     }
+
+    public function getDateAttribute($value)
+    {
+        return Carbon::parse($value)->format('d-m-Y');
+    }
+
+    // public function getOfficialStartTimeAttribute($value)
+    // {
+    //     return Carbon::parse($value)->format('d-m-Y');
+    // }
+
+    // public function getOfficialEndTimeAttribute($value)
+    // {
+    //     return Carbon::parse($value)->format('d-m-Y');
+    // }
 }
