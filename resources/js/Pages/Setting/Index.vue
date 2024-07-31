@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/vue3';
 
 export default {
     props: {
@@ -21,7 +21,7 @@ export default {
     methods: {
         updateSettings() {
             this.settings.forEach(setting => {
-                Inertia.post(`/settings/${setting.id}`, setting);
+                router.post(`/settings/${setting.id}`, setting);
             });
         },
     },
