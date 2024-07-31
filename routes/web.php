@@ -87,3 +87,13 @@ Route::resource('meetings', App\Http\Controllers\MeetingController::class)->only
 Route::resource('club-settings', App\Http\Controllers\ClubSettingController::class)->only('index', 'store', 'show');
 
 Route::resource('meetings', App\Http\Controllers\MeetingController::class)->only('index', 'store', 'show');
+
+
+Route::resource('club-settings', App\Http\Controllers\ClubSettingController::class)->only('index', 'store', 'show');
+
+Route::resource('meetings', App\Http\Controllers\MeetingController::class)->only('index', 'store', 'show');
+
+
+Route::resource('club-settings', App\Http\Controllers\ClubSettingController::class)->only('index', 'store', 'show');
+
+Route::resource('meetings', App\Http\Controllers\MeetingController::class)->only('index', 'store', 'show');

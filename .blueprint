@@ -3,10 +3,10 @@ created:
     - app/Http/Controllers/MeetingController.php
     - database/factories/ClubSettingFactory.php
     - database/factories/MeetingFactory.php
-    - database/migrations/2024_07_31_010234_create_club_settings_table.php
-    - database/migrations/2024_07_31_010235_create_meetings_table.php
-    - database/migrations/2024_07_31_010236_create_meeting_member_table.php
-    - database/migrations/2024_07_31_010237_create_guest_meeting_table.php
+    - database/migrations/2024_07_31_163740_create_club_settings_table.php
+    - database/migrations/2024_07_31_163741_create_meetings_table.php
+    - database/migrations/2024_07_31_163742_create_meeting_member_table.php
+    - database/migrations/2024_07_31_163743_create_guest_meeting_table.php
     - app/Models/ClubSetting.php
     - app/Models/Meeting.php
     - tests/Feature/Http/Controllers/ClubSettingControllerTest.php
@@ -26,4 +26,4 @@ models:
     Setting: { table_name: string, log_changes: boolean, loggable_fields: 'json nullable' }
     User: { name: string, email: string, status: 'string default:active', user_type: 'string default:guest', nationality: 'string default:KE', gender: 'string default:M', email_verified_at: 'timestamp nullable', password: string, classification_id: 'biginteger unsigned nullable', avatar: 'string nullable', phone: 'string nullable', member_no: 'string nullable', remember_token: 'string:100 nullable' }
     ClubSetting: { club_name: 'string:50', change_log_active: 'boolean nullable', default_currency: 'string:5 nullable', logo: 'string:100 nullable', dispatch_emails: 'boolean nullable', active: 'boolean nullable', address: 'string:100 nullable', telephone: 'string:100 nullable', email: 'string:100 nullable', slogan: 'string:100 nullable', pin: 'string:100 nullable' }
-    Meeting: { id: bigIncrements, type: 'string index', date: dateTimeTz, venue: string, topic: 'string index', host: text, uuid: 'text nullable', meeting_no: 'unsignedBigInteger index nullable', official_start_time: text, official_end_time: text, detail: 'text nullable', timestamps: timestamps, relationships: { belongsToMany: 'Member,Guest' } }
+    Meeting: { id: bigIncrements, type: 'string index', date: dateTimeTz, venue: string, topic: 'string index', host: text, uuid: 'text nullable', meeting_no: 'string index nullable', official_start_time: text, official_end_time: text, detail: 'text nullable', timestamps: timestamps, relationships: { belongsToMany: 'Member,Guest' } }

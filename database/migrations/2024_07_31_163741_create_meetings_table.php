@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('topic')->index();
             $table->text('host');
             $table->text('uuid')->nullable();
-            $table->unsignedBigInteger('meeting_no')->index()->nullable();
+            $table->string('meeting_no')->index()->nullable();
             $table->text('official_start_time');
             $table->text('official_end_time');
             $table->text('detail')->nullable();

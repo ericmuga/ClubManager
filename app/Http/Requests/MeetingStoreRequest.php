@@ -26,9 +26,9 @@ class MeetingStoreRequest extends FormRequest
             'topic' => ['required', 'string'],
             'host' => ['required', 'string'],
             'uuid' => ['nullable', 'string'],
-            'meeting_no' => ['nullable', 'integer', 'gt:0'],
-            'official_start_time' => ['required', 'string'],
-            'official_end_time' => ['required', 'string'],
+            'meeting_no' => ['nullable', 'string'],
+            'official_start_time' => ['required'],
+            'official_end_time' => ['required'],
             'detail' => ['nullable', 'string'],
         ];
     }

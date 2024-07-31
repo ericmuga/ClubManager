@@ -49,7 +49,7 @@ watch(search, debounce(() => {
 const form = useForm({
   type: '',
   description: '',
-  meeting_date: null,
+  date: null,
   venue: '',
   topic: '',
   detail: '',
@@ -68,7 +68,7 @@ const createOrUpdateMeeting = (meeting = null) => {
 
   if (meeting) {
     form.type = meeting.type;
-    form.meeting_date = meeting.meeting_date;
+    form.date = meeting.date;
     form.venue = meeting.venue;
     form.topic = meeting.topic;
     form.detail = meeting.detail;
@@ -217,8 +217,8 @@ const meeting_types = [{ code: 'Physical' }, { code: 'GoogleMeet' }, { code: 'Zo
                 </div>
 
                 <div class="flex flex-row justify-between p-field">
-                    <label for="meeting_date">Meeting Date</label>
-                    <input type="date" id="meeting_date" v-model="form.meeting_date"  class="p-2 rounded-md"/>
+                    <label for="date">Meeting Date</label>
+                    <input type="date" id="date" v-model="form.date"  class="p-2 rounded-md"/>
                 </div>
                 <div class="flex flex-row justify-between p-field">
                     <label for="venue">Venue</label>
