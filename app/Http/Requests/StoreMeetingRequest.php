@@ -30,7 +30,7 @@ class StoreMeetingRequest extends FormRequest
             'detail' => 'nullable|string',
             'host' => 'nullable|string',
             'uuid' => 'nullable|string',
-            'meeting_no' => 'required|string',
+            // 'meeting_no' => 'required|string',
             'official_start_time' => 'required|date_format:H:i',
             'official_end_time' => 'required|date_format:H:i',
         ];

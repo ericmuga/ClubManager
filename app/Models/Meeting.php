@@ -64,4 +64,10 @@ class Meeting extends Model
     {
         return Carbon::parse($value)->format('d-m-Y');
     }
+
+    public function attendance()
+    {
+        //this will return all guests, members, hosts of the meeting
+
+    }
 }

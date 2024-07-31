@@ -33,7 +33,7 @@ img {
   height: 50px;
 }
 svg {
-  width: 100px; /* Set a default size for the SVG logo */
-  height: auto;
+  width: 150px; /* Set a default size for the SVG logo */
+  height: 50px;
 }
 </style>
