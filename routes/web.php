@@ -1,19 +1,27 @@
 <?php
 
-use App\Http\Controllers\{MemberController, ProfileController,SettingController,TemplateController,MeetingController};
+use App\Http\Controllers\{MemberController,
+                          ProfileController,
+                          SettingController,
+                          TemplateController,
+                          MeetingController,
+                          ClubSettingController};
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
 
+Route::get('/', fn()=>redirect('login'));use Inertia\Inertia;
+
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
+
+Route::get('/api/club-settings/logo', [ClubSettingController::class, 'getLogo']);
 
 
 Route::get('/dashboard', function () {
@@ -52,6 +60,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
 require __DIR__.'/auth.php';
 
 
-Route::resource('club-settings', App\Http\Controllers\ClubSettingController::class)->only('index', 'store');
+Route::resource('club-settings', ClubSettingController::class)->only('index', 'store');
 
 

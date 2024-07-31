@@ -52,6 +52,22 @@ class ClubSettingController extends Controller
         return redirect()->route('club-settings.index');
     }
 
+    public function getLogo()
+    {
+        $clubSetting = ClubSetting::latest()->first(); // Adjust this query as per your requirement
+        $logoPath = $clubSetting ? $clubSetting->logo : null;
+
+        if ($logoPath && Storage::disk('public')->exists($logoPath)) {
+            return response()->json([
+                'exists' => true,
+                'filename' => basename($logoPath),
+                'url' => Storage::url($logoPath), // URL to access the logo
+            ]);
+        }
+
+        return response()->json(['exists' => false]);
+    }
+
 
 
 
