@@ -24,7 +24,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { Link } from '@inertiajs/inertia-vue3';
+import { Link } from '@inertiajs/vue3';
 import Drop from '@/Components/Drop.vue';
 
 const props = defineProps({
