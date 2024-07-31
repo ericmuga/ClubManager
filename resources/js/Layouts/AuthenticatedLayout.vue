@@ -126,13 +126,13 @@ const showingNavigationDropdown = ref(false);
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
-                         <ResponsiveNavLink :href="route('members')" :active="route().current('members')">
+                         <ResponsiveNavLink :href="route('members.index')" :active="route().current('members.index')">
                             Members
                         </ResponsiveNavLink>
-                         <ResponsiveNavLink :href="route('meetings')" :active="route().current('meetings')">
+                         <ResponsiveNavLink :href="route('meetings.index')" :active="route().current('meetings.index')">
                             Meetings
                         </ResponsiveNavLink>
-                         <ResponsiveNavLink :href="route('club-settings')" :active="route().current('club-settings')">
+                         <ResponsiveNavLink :href="route('club-settings.index')" :active="route().current('club-settings.index')">
                             Club Settings
                         </ResponsiveNavLink>
                     </div>
