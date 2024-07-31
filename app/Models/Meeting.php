@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Carbon\Carbon;
 
 class Meeting extends Model
 {
@@ -36,4 +39,29 @@ class Meeting extends Model
         'date' => 'datetime',
         'meeting_no' => 'integer',
     ];
+
+    public function members(): BelongsToMany
+    {
+        return $this->belongsToMany(Member::class);
+    }
+
+    public function guests(): BelongsToMany
+    {
+        return $this->belongsToMany(Guest::class);
+    }
+
+    public function getDateAttribute($value)
+    {
+        return Carbon::parse($value)->format('d-m-Y');
+    }
+
+    public function getOfficialStartTimeAttribute($value)
+    {
+        return Carbon::parse($value)->format('d-m-Y');
+    }
+
+    public function getOfficialEndTimeAttribute($value)
+    {
+        return Carbon::parse($value)->format('d-m-Y');
+    }
 }

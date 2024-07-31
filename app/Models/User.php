@@ -61,4 +61,10 @@ class User extends Authenticatable
         {
             return $this->hasMany(Contact::class)->where('type','phone');
         }
-}
+
+        public function meetings()
+        {
+            return $this->belongsToMany(Meeting::class);
+        }
+
+    }

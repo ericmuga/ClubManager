@@ -4,7 +4,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref,onMounted,watch} from 'vue';
 import Modal from '@/Components/Modal.vue'
-import meetingCard from '@/Components/meetingCard.vue';
+// import MeetingCard from '@/Components/MeetingCard.vue';
 import debounce from 'lodash/debounce';
 import { useForm } from '@inertiajs/inertia-vue3';
 import {countryListAllIsoData} from '@/Composables/useCountries.js'
@@ -133,7 +133,7 @@ watch(search, debounce(() => {
 {
   meetingsArray.value=props.meetings;
 }
-else meetingsArray.value=meetingsArray.value.filter(meeting=>meeting.name.includes(search.value))
+else meetingsArray.value=meetingsArray.value.filter(meeting=>meeting.description.includes(search.value))
 },500))
 
 
@@ -160,17 +160,16 @@ else meetingsArray.value=meetingsArray.value.filter(meeting=>meeting.name.includ
                       />
                    <div>
                    <DataTable :value="meetings">
+                       <Column field="meeting_no" header="Meeting Number" />
                        <Column field="type" header="Type" />
-                       <Column field="description" header="Description" />
-                       <Column field="meeting_date" header="Meeting Date" />
+                       <!-- <Column field="description" header="Description" /> -->
+                       <Column field="date" header="Meeting Date" />
                        <Column field="venue" header="Venue" />
                        <Column field="topic" header="Topic" />
-                       <Column field="detail" header="Detail" />
                        <Column field="host" header="Host" />
-                       <Column field="uuid" header="UUID" />
-                       <Column field="meeting_no" header="Meeting Number" />
-                       <Column field="official_start_time" header="Official Start Time" />
-                       <Column field="official_end_time" header="Official End Time" />
+                       <!-- <Column field="uuid" header="UUID" /> -->
+
+
                    </DataTable>
 
                 </div>

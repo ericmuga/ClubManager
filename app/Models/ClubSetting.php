@@ -26,7 +26,6 @@ class ClubSetting extends Model
         'email',
         'slogan',
         'pin',
-        'id',
     ];
 
     /**
@@ -39,6 +38,5 @@ class ClubSetting extends Model
         'change_log_active' => 'boolean',
         'dispatch_emails' => 'boolean',
         'active' => 'boolean',
-
     ];
 }

@@ -21,15 +21,17 @@ class MeetingFactory extends Factory
     public function definition(): array
     {
         return [
-            'type' => $this->faker->word(),
+            'type' => $this->faker->randomElement(['physical', 'zoom', 'googlemeet']),
+
+            // 'description'=>$this->faker->word(),
             'date' => $this->faker->dateTime(),
-            'venue' => $this->faker->word(),
+            'venue' => $this->faker->city(),
             'topic' => $this->faker->word(),
-            'host' => $this->faker->text(),
+            'host' => $this->faker->name(),
             'uuid' => $this->faker->uuid(),
-            'meeting_no' => $this->faker->randomNumber(),
-            'official_start_time' => $this->faker->text(),
-            'official_end_time' => $this->faker->text(),
+            'meeting_no' => $this->faker->numberBetween(1,100),
+            'official_start_time' => $this->faker->time(),
+            'official_end_time' => $this->faker->time(),
             'detail' => $this->faker->text(),
         ];
     }

@@ -27,7 +27,7 @@ class UserFactory extends Factory
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'status' => 'active',
-            'user_type' => 'guest',
+            'user_type' => $this->faker->randomElement(['member','guest']),
             'nationality' => 'Kenyan',
             'gender' => 'M',
             'email_verified_at' => now(),

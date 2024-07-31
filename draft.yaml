@@ -12,6 +12,35 @@ models:
     slogan: string:100 nullable
     pin: string:100 nullable
 
+  Meeting:
+    id: bigIncrements
+    type: string index
+    date: dateTimeTz
+    venue: string
+    topic: string index
+    host: text
+    uuid: text nullable
+    meeting_no: unsignedBigInteger index nullable
+    official_start_time: text
+    official_end_time: text
+    detail: text nullable
+    timestamps: true
+    relationships:
+      belongsToMany: Member,Guest
+
+
+
+pivots:
+  meeting_member:
+    meeting_id: foreignId
+    member_id: foreignId
+    timestamps: true
+
+  guest_meeting:
+    guest_id: foreignId
+    meeting_id: foreignId
+    timestamps: true
+
 
 
 controllers:
@@ -25,5 +54,16 @@ controllers:
 
    show:
      render: club_setting
+
+  Meeting:
+   index:
+      query: all
+   store:
+      validate: meeting_no:unique
+      save: meeting
+      redirect: meetings.index
+
+   show:
+     render: meeting
 
   # ...
