@@ -4,7 +4,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref,onMounted} from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm } from '@inertiajs/vue3;
 import { currencies } from '@/Composables/useCountries';
 import Swal from 'sweetalert2';
 
