@@ -9,7 +9,7 @@
 
 <script setup>
 
-import { Inertia } from '@inertiajs/inertia';
+// import { router } from '@inertiajs/vue3';
 
 import Swal from 'sweetalert2'
 
