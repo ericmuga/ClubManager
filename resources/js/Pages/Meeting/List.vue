@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
 import Modal from '@/Components/Modal.vue';
-import debounce from 'lodash/debounce';
+import {debounce} from 'lodash';
 import { useForm } from '@inertiajs/inertia-vue3';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
