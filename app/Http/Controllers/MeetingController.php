@@ -20,14 +20,13 @@ class MeetingController extends Controller
         return Inertia::render('Meeting/List',compact('meetings'));
     }
 
-    public function store(MeetingStoreRequest $request): RedirectResponse
+    public function store(MeetingStoreRequest $request)
     {
         $validated=$request->validated();
         $validated['meeting_no']=$this->generateNewMeetingNo();
+        $meeting = Meeting::create($validated);
 
-        $meeting = Meeting::create($request->validated());
-
-        return redirect()->route('meetings.index');
+        return response()->json(['meeting' => $meeting], 200);
     }
 
     public function show(Meeting $meeting) : Response
@@ -61,7 +60,19 @@ protected function generateNewMeetingNo()
 
     return $newMeetingNo;
 }
+public function destroy($id)
+{
+    // Find the meeting by ID
+    $meeting = Meeting::findOrFail($id);
 
+    // Delete the meeting
+    $meeting->delete();
+
+    // Return a success response
+    return response()->json([
+        'message' => 'Meeting deleted successfully.'
+    ], \Illuminate\Http\Response::HTTP_OK);
+}
 
     // public function show(Request $request, Meeting $meeting): Response
     // {

@@ -10,6 +10,7 @@ import Column from 'primevue/column';
 import Toolbar from 'primevue/toolbar';
 import Button from 'primevue/button';
 import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const props = defineProps({
   meetings: Array,
@@ -94,15 +95,19 @@ const handleForm = () => {
 };
 
 const createMeeting = () => {
-  form.post(route('meetings.store'), {
-    onSuccess: () => {
-      console.log('Meeting created successfully');
-      showModal.value = false;
-    },
-    onError: (errors) => {
-      console.error('Error creating meeting:', errors);
-    }
-  });
+
+  axios.post(route('meetings.store'), form.data())
+       .then((resp) => {
+         showModal.value=false
+         Swal.fire('Success', `Meeting ${resp.data.meeting.meeting_no} created successfully!`, 'success');
+
+         // Push the new meeting to the array
+         meetingsArray.value.push(resp.data.meeting);
+
+         // Sort the meetings by meeting_no in descending order
+         meetingsArray.value.sort((a, b) => b.meeting_no - a.meeting_no);
+       })
+       .catch(err => Swal.fire('Error', `The following error was encountered: ${err}`, 'error'));
 };
 
 const updateMeeting = () => {
@@ -127,14 +132,18 @@ const confirmDeleteMeeting = (meeting) => {
     cancelButtonText: 'No, cancel!',
   }).then((result) => {
     if (result.isConfirmed) {
-      Inertia.delete(route('meetings.destroy', meeting.id), {
-        onSuccess: () => {
-          Swal.fire('Deleted!', 'The meeting has been deleted.', 'success');
-        },
-        onError: () => {
-          Swal.fire('Error!', 'There was an error deleting the meeting.', 'error');
-        },
-      });
+        const meetingId=meeting.id
+     axios.delete(route('meetings.destroy', meetingId))
+    .then(() => {
+      Swal.fire('Deleted!', 'The meeting has been deleted.', 'success');
+
+      // Optionally, remove the deleted meeting from your local state
+      // For example, if using a reactive array:
+      meetingsArray.value = meetingsArray.value.filter(meeting => meeting.id !== meetingId);
+    })
+    .catch(() => {
+      Swal.fire('Error!', 'There was an error deleting the meeting.', 'error');
+    });
     }
   });
 };
