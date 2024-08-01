@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="p-5 rounded-md" style="width: 400px;">
     <img v-if="logoUrl" :src="logoUrl" alt="Application Logo" />
     <svg v-else viewBox="0 0 316 316" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -28,10 +28,10 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-img {
+/* img {
   max-width: 300px;
   height: 50px;
-}
+} */
 svg {
   width: 150px; /* Set a default size for the SVG logo */
   height: 50px;

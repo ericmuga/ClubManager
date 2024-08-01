@@ -19,8 +19,18 @@ class ClubSettingStoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'club_name' => ['required', 'string', 'max:50'],
-        ];
+         return [
+            'club_name' => 'required|string|max:255',
+            'change_log_active' => 'nullable|boolean',
+            'default_currency' => 'nullable|string|max:10',
+            // 'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'active' => 'required|boolean',
+            'email'=>'nullable|email',
+            'address'=>'nullable',
+            'telephone'=>'nullable',
+            'slogan'=>'nullable',
+            'pin'=>'nullable|max:11',
+            'dispatch_emails'=>'nullable|boolean',
+ ];
     }
 }
