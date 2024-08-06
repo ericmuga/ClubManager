@@ -144,7 +144,7 @@ const updateMember=()=>{
                         @upload="handleFileUpload"
                         v-model:search="search"
                       />
-                  <div class="grid gap-2 p-5 text-center lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1">
+                  <div class="grid p-5 text-center md:gap-2 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1">
                      <MemberCard
                             v-for="member in membersArray"
                             :member="member"

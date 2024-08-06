@@ -32,6 +32,8 @@ Route::middleware('auth')->group(function () {
 
 
 Route::get('/download-template/{model}', [TemplateController::class, 'downloadTemplate'])->name('downloadTemplate');
+Route::get('/download-list/{model}', [TemplateController::class, 'downloadList'])->name('downloadList');
+Route::get('/download-pdf-list/{model}', [TemplateController::class, 'downloadPDFList'])->name('downloadPdfList');
 
 Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
