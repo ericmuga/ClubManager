@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MeetingStoreRequest;
 use App\Models\Guest;
-use App\Models\Meeting;
+use App\Models\{Meeting,MeetingLine};
 use App\Models\Member;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -33,9 +33,9 @@ class MeetingController extends Controller
     {
         //hydrate meeting with attendance
         // get members
-        $members=Member::all('id','name');
+        $members=Member::all('id','name','email','phone');
         $guests=Guest::all('id','name','email');
-        $meeting_lines=$meeting->meeting_lines();
+        $meeting_lines=$meeting->meeting_lines()->get();
 
         return Inertia::render('Meeting/Show',compact('meeting','meeting_lines','members','guests'));
     }
@@ -86,8 +86,34 @@ public function destroy($id)
     ], \Illuminate\Http\Response::HTTP_OK);
 }
 
-    // public function show(Request $request, Meeting $meeting): Response
-    // {
-    //     return view('meeting');
-    // }
+public function attend(Request $request)
+{
+    $validated = $request->validate([
+        'userId' => 'required|integer|exists:users,id',
+        'userType' => 'required|string|in:member,guest',
+        'score' => 'required|string', // Score is stored as a string in the database
+        'attendedFrom' => 'nullable|date_format:H:i',
+        'attendedTo' => 'nullable|date_format:H:i',
+    ]);
+
+    // Find or create the meeting line entry
+    $meetingLine = MeetingLine::updateOrCreate(
+        [
+            'meeting_id' => $request->input('meeting_id'),
+            'user_id' => $validated['userId'],
+            'user_type' => $validated['userType'],
+        ],
+        [
+            'attended_from' => $validated['attendedFrom'],
+            'attended_to' => $validated['attendedTo'],
+            'score' => $validated['score'],
+        ]
+    );
+
+    return response()->json(['success' => true, 'message' => 'Meeting line updated successfully.']);
+}
+
+
+
+
 }

@@ -28,26 +28,29 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function ()
+    {
 
 
-Route::get('/download-template/{model}', [TemplateController::class, 'downloadTemplate'])->name('downloadTemplate');
-Route::get('/download-list/{model}', [TemplateController::class, 'downloadList'])->name('downloadList');
-Route::get('/download-pdf-list/{model}', [TemplateController::class, 'downloadPDFList'])->name('downloadPdfList');
+            Route::get('/download-template/{model}', [TemplateController::class, 'downloadTemplate'])->name('downloadTemplate');
+            Route::get('/download-list/{model}', [TemplateController::class, 'downloadList'])->name('downloadList');
+            Route::get('/download-pdf-list/{model}', [TemplateController::class, 'downloadPDFList'])->name('downloadPdfList');
 
-Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+            Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+            Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+            Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    //member routes
-Route::resource('members',MemberController::class);
-Route::post('/members/upload', [MemberController::class, 'upload'])->name('members.upload');
+                //member routes
+            Route::resource('members',MemberController::class);
+            Route::post('/members/upload', [MemberController::class, 'upload'])->name('members.upload');
 
 
-  //meetings
-  Route::resource('meetings',MeetingController::class);
-Route::post('/meetings/upload', [MeetingController::class, 'upload'])->name('meetings.upload');
-});
+            //meetings
+            Route::resource('meetings',MeetingController::class);
+            Route::post('/meetings/upload', [MeetingController::class, 'upload'])->name('meetings.upload');
+            Route::post('/meeting-attend',[MeetingController::class,'attend'])->name('meetings.attend');
+    }
+);
 
 
 

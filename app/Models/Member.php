@@ -21,4 +21,9 @@ class Member extends User
     }
     protected $fillable=['name', 'email', 'nationality', 'gender', 'member_no', 'phone'];
 
+    public function scopeMembers($query)
+    {
+        return $query->where('user_type', 'member');
+    }
+
 }

@@ -12,6 +12,10 @@ class Guest extends User
 
 
 
+    public function scopeGuests($query)
+    {
+        return $query->where('user_type', 'guest');
+    }
 
     protected static function booted()
     {
