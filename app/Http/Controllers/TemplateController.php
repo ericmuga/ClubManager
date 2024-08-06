@@ -83,9 +83,10 @@ class TemplateController extends Controller
         // Initialize mPDF
         // $mpdf = new Mpdf();
          // Initialize mPDF with a custom temporary directory
-        $mpdf = new \Mpdf\Mpdf([
-            'tempDir' => '/var/www/clubManager/storage/mpdf_tmp'
-        ]);
+       $mpdf = new \Mpdf\Mpdf([
+                'tempDir' => storage_path('mpdf_tmp')
+            ]);
+
 
         // Write HTML to the PDF
         $mpdf->WriteHTML($html);
