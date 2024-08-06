@@ -4,10 +4,9 @@ import { Head,useForm } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
 import Modal from '@/Components/Modal.vue';
 import {debounce} from 'lodash';
-// import { useForm } from '@inertiajs/inertia-vue3';
+import ActionPanel from '@/Components/ActionPanel.vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import Toolbar from 'primevue/toolbar';
 import Button from 'primevue/button';
 import Swal from 'sweetalert2';
 import axios from 'axios';
@@ -151,7 +150,24 @@ const confirmDeleteMeeting = (meeting) => {
 const viewMeeting = (meeting) => {
   Inertia.get(route('meetings.show', meeting.id));
 };
+const handleFileUpload = (file) => {
+  const uploadForm = useForm({
+    file: null
+  })
 
+  uploadForm.file = file
+
+  uploadForm.post(route('meetings.upload'), {
+    forceFormData: true,
+    onSuccess: () => {
+      console.log('File uploaded successfully')
+      // Handle post-upload actions, e.g., refresh data
+    },
+    onError: (errors) => {
+      console.error('Error uploading file:', errors)
+    }
+  })
+}
 const meeting_types = [{ code: 'Physical' }, { code: 'GoogleMeet' }, { code: 'Zoom' }];
 </script>
 
@@ -165,11 +181,11 @@ const meeting_types = [{ code: 'Physical' }, { code: 'GoogleMeet' }, { code: 'Zo
         </template>
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
-                <Toolbar>
+                <!-- <Toolbar>
                     <template #start>
                         <Button icon="pi pi-plus" class="mr-2" severity="success" @click="createOrUpdateMeeting(null,'add')" />
-                        <!-- <Button icon="pi pi-print" class="mr-2" severity="secondary" text /> -->
-                        <!-- <Button icon="pi pi-upload" severity="secondary" text /> -->
+                        <Button icon="pi pi-print" class="mr-2" severity="secondary" text />
+                        <Button icon="pi pi-upload" severity="secondary" text />
                     </template>
 
                     <template #center>
@@ -182,7 +198,16 @@ const meeting_types = [{ code: 'Physical' }, { code: 'GoogleMeet' }, { code: 'Zo
                     </template>
 
                     <template #end> <SplitButton label="Save" :model="items"></SplitButton></template>
-                </Toolbar>
+                </Toolbar> -->
+
+
+                  <ActionPanel
+                        label="Meeting"
+                        model="meeting"
+                        @action="createOrUpdateMeeting(null,'add')"
+                        @upload="handleFileUpload"
+                        v-model:search="search"
+                      />
                 <div>
                     <DataTable :value="meetingsArray">
                         <Column field="meeting_no" header="Meeting Number" />

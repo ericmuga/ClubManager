@@ -39,6 +39,17 @@ class MeetingController extends Controller
         return Inertia::render('Meeting/Show',compact('meeting'));
     }
 
+
+    public function upload(Request $request)
+    {
+        // $request->validate([
+        //     'file' => 'required|file|mimes:xlsx,xls'
+        // ]);
+
+        // Excel::import(new MembersImport, $request->file('file'));
+
+        return redirect()->back()->with('success', 'File uploaded successfully');
+    }
     /**
  * Generate a new meeting number in the format M0001, M0002, etc.
  *
