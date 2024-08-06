@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head,useForm } from '@inertiajs/vue3';
+import { Head,useForm,router } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
 import Modal from '@/Components/Modal.vue';
 import {debounce} from 'lodash';
@@ -148,7 +148,7 @@ const confirmDeleteMeeting = (meeting) => {
 };
 
 const viewMeeting = (meeting) => {
-  Inertia.get(route('meetings.show', meeting.id));
+  router.get(route('meetings.show', meeting.id));
 };
 const handleFileUpload = (file) => {
   const uploadForm = useForm({
@@ -181,24 +181,7 @@ const meeting_types = [{ code: 'Physical' }, { code: 'GoogleMeet' }, { code: 'Zo
         </template>
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
-                <!-- <Toolbar>
-                    <template #start>
-                        <Button icon="pi pi-plus" class="mr-2" severity="success" @click="createOrUpdateMeeting(null,'add')" />
-                        <Button icon="pi pi-print" class="mr-2" severity="secondary" text />
-                        <Button icon="pi pi-upload" severity="secondary" text />
-                    </template>
 
-                    <template #center>
-                        <IconField>
-                            <InputIcon>
-                                <i class="pi pi-search" />
-                            </InputIcon>
-                            <InputText placeholder="Search" v-model="search" />
-                        </IconField>
-                    </template>
-
-                    <template #end> <SplitButton label="Save" :model="items"></SplitButton></template>
-                </Toolbar> -->
 
 
                   <ActionPanel

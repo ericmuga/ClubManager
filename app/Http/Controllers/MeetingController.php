@@ -35,8 +35,9 @@ class MeetingController extends Controller
         // get members
         $members=Member::all('id','name');
         $guests=Guest::all('id','name','email');
-        $attendance=$meeting->attendance();
-        return Inertia::render('Meeting/Show',compact('meeting'));
+        $meeting_lines=$meeting->meeting_lines();
+
+        return Inertia::render('Meeting/Show',compact('meeting','meeting_lines','members','guests'));
     }
 
 

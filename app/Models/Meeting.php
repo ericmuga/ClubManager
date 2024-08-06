@@ -52,6 +52,13 @@ class Meeting extends Model
         return Carbon::parse($value)->format('d-m-Y');
     }
 
+    public function meeting_lines()
+    {
+        return $this->hasMany(MeetingLine::class);
+    }
+
+    // public function Me
+
     // public function getOfficialStartTimeAttribute($value)
     // {
     //     return Carbon::parse($value)->format('d-m-Y');
