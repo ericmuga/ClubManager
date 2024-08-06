@@ -72,37 +72,24 @@ const filteredGuests = computed(() => {
     );
 });
 
+const initializeUserData = (userArray, userType) => {
+    props.meeting_lines.forEach(line => {
+        // Check if the line is relevant to the user type
+        if (line.user_type === userType) {
+            const user = userArray.value.find(m => m.id === line.user_id);
 
+            if (user) {
+                user.attended = line.score === '1'; // Set checkbox status
+                user.attendedFrom = line.attended_from;
+                user.attendedTo = line.attended_to;
+                user.score = line.score;
+                // Ensure meetingId is set
+                user.meetingId = line.meeting_id;
+            }
+        }
+    });
+};
 // Function to initialize member data from meeting_lines
-const initializeMemberData = () => {
-    props.meeting_lines.forEach(line => {
-        const member = membersArray.value.find(m => m.id === line.user_id);
-
-        if (member) {
-            member.attended = line.score === '1'; // Set checkbox status
-            member.attendedFrom = line.attended_from;
-            member.attendedTo = line.attended_to;
-            member.score = line.score;
-            // Ensure meetingId is set
-            member.meetingId = line.meeting_id;
-        }
-    });
-};
-
-const initializeGuestData = () => {
-    props.meeting_lines.forEach(line => {
-        const guest = guestsArray.value.find(m => m.id === line.user_id);
-
-        if (guest) {
-            guest.attended = line.score === '1'; // Set checkbox status
-            guest.attendedFrom = line.attended_from;
-            guest.attendedTo = line.attended_to;
-            guest.score = line.score;
-            // Ensure meetingId is set
-            guest.meetingId = line.meeting_id;
-        }
-    });
-};
 
 
 const focusSearchInput = () => {
@@ -115,8 +102,7 @@ const value = ref('0'); // Set default tab value to '0'
 
 // On mounted lifecycle hook
 onMounted(() => {
-    initializeMemberData();
-    initializeGuestData();
+    initializeUserData();
     // focusSearchInput();
 });
 </script>
