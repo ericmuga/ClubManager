@@ -29,9 +29,6 @@ const updateAttendance = (id, attended, userType) => {
             });
 };
 
-
-
-
 const updateScore = (id, score, userType, attendedFrom, attendedTo) => {
     axios.post(route('meetings.attend'), {
         userId: id,
@@ -49,49 +46,32 @@ const updateScore = (id, score, userType, attendedFrom, attendedTo) => {
         console.error('Error updating score', error);
     });
 };
-
-
 const searchMember=ref('')
 const searchGuest=ref('')
-
-const filteredMembers = computed(() => {
-    const searchTerm = searchMember.value.toLowerCase();
-    return membersArray.value.filter(member =>
-        member.name.toLowerCase().includes(searchTerm) ||
-        member.email.toLowerCase().includes(searchTerm) ||
-        member.phone.toLowerCase().includes(searchTerm)
+const filterUsers = (searchTerm, userArray) => {
+    const lowercasedSearchTerm = searchTerm.toLowerCase();
+    return userArray.value.filter(user =>
+        user.name.toLowerCase().includes(lowercasedSearchTerm) ||
+        user.email.toLowerCase().includes(lowercasedSearchTerm) ||
+        user.phone.toLowerCase().includes(lowercasedSearchTerm)
     );
-});
-
-const filteredGuests = computed(() => {
-    const searchTerm = searchGuest.value.toLowerCase();
-    return guestsArray.value.filter(guest =>
-        guest.name.toLowerCase().includes(searchTerm) ||
-        guest.email.toLowerCase().includes(searchTerm) ||
-        guest.phone.toLowerCase().includes(searchTerm)
-    );
-});
-
+};
+const filteredMembers = computed(() => filterUsers(searchMember.value, membersArray));
+const filteredGuests = computed(() => filterUsers(searchGuest.value, guestsArray));
 const initializeUserData = (userArray, userType) => {
     props.meeting_lines.forEach(line => {
-        // Check if the line is relevant to the user type
         if (line.user_type === userType) {
             const user = userArray.value.find(m => m.id === line.user_id);
-
             if (user) {
                 user.attended = line.score === '1'; // Set checkbox status
                 user.attendedFrom = line.attended_from;
                 user.attendedTo = line.attended_to;
                 user.score = line.score;
-                // Ensure meetingId is set
                 user.meetingId = line.meeting_id;
             }
         }
     });
 };
-// Function to initialize member data from meeting_lines
-
-
 const focusSearchInput = () => {
     if (searchMember.value) {
         searchMember.value.focus();
@@ -100,11 +80,11 @@ const focusSearchInput = () => {
 
 const value = ref('0'); // Set default tab value to '0'
 
-// On mounted lifecycle hook
 onMounted(() => {
     initializeUserData();
-    // focusSearchInput();
+
 });
+
 </script>
 
 
@@ -204,7 +184,7 @@ onMounted(() => {
                                     <template #body="{ data }">
                                         <InputText
                                             v-model="data.attendedFrom"
-                                            :placeholder="'18:00'"
+                                            :placeholder="'18:00:00'"
                                             size="small"
                                             @input="updateAttendance(data.id, data.attended, data.user_type, data.attendedFrom, data.attendedTo)"
                                         />
@@ -215,7 +195,7 @@ onMounted(() => {
                                     <template #body="{ data }">
                                         <InputText
                                             v-model="data.attendedTo"
-                                            :placeholder="'20:00'"
+                                            :placeholder="'20:00:00'"
                                             size="small"
                                             @input="updateAttendance(data.id, data.attended, data.userType, data.attendedFrom, data.attendedTo)"
                                         />
