@@ -8,13 +8,13 @@ import Toolbar from 'primevue/toolbar';
 const props=defineProps({meeting:Object,members:Object,guests:Object,meeting_lines:Object});
 const membersArray=ref([...props.members]);
 const guestsArray=ref([...props.guests]);
-const handleAttendanceChange = (data) => {
+const handleAttendanceChange = (data,userType) => {
     // Automatically update the score based on the checkbox state
     data.score = data.attended ? 1 : 0;
     // Call your existing method to handle the attendance update
-    updateAttendance(data.id, data.attended, 'member');
+    updateAttendance(data.id, data.attended, userType);
     // Optionally, call your update score method if you want to save it immediately
-    updateScore(data.id, data.score, 'member');
+    updateScore(data.id, data.score, userType);
 };
 
 
@@ -137,7 +137,7 @@ onMounted(() => {
                                     <template #body="{ data }">
                                         <input type="checkbox"
                                             v-model="data.attended"
-                                            @change="handleAttendanceChange(data)" />
+                                            @change="handleAttendanceChange(data,'member')" />
                                     </template>
                                 </Column>
                                 <Column header="Score">
@@ -189,7 +189,7 @@ onMounted(() => {
                                 <template #body="{ data }">
                                     <input type="checkbox"
                                         v-model="data.attended"
-                                        @change="handleAttendanceChange(data)" />
+                                        @change="handleAttendanceChange(data,'guest')" />
                                 </template>
                             </Column>
                             <Column header="Score">
