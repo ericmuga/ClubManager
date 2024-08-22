@@ -8,6 +8,15 @@ import Toolbar from 'primevue/toolbar';
 const props=defineProps({meeting:Object,members:Object,guests:Object,meeting_lines:Object});
 const membersArray=ref([...props.members]);
 const guestsArray=ref([...props.guests]);
+const handleAttendanceChange = (data) => {
+    // Automatically update the score based on the checkbox state
+    data.score = data.attended ? 1 : 0;
+    // Call your existing method to handle the attendance update
+    updateAttendance(data.id, data.attended, 'member');
+    // Optionally, call your update score method if you want to save it immediately
+    updateScore(data.id, data.score, 'member');
+};
+
 
 const updateAttendance = (id, attended, userType) => {
     const score = attended ? '1' : '0'; // Score is sent as a string
@@ -81,7 +90,8 @@ const focusSearchInput = () => {
 const value = ref('0'); // Set default tab value to '0'
 
 onMounted(() => {
-    initializeUserData();
+    initializeUserData(membersArray,'member');
+    initializeUserData(guestsArray,'guest');
 
 });
 
@@ -123,16 +133,22 @@ onMounted(() => {
                                 <Column field="name" header="Member Name"></Column>
                                 <Column field="phone" header="Phone Number"></Column>
                                 <Column field="email" header="Email"></Column>
-                                <Column header="Attended?">
+                                  <Column header="Attended?">
                                     <template #body="{ data }">
-                                        <input type="checkbox" v-model="data.attended" @change="updateAttendance(data.id, data.attended, 'member')" />
+                                        <input type="checkbox"
+                                            v-model="data.attended"
+                                            @change="handleAttendanceChange(data)" />
                                     </template>
                                 </Column>
                                 <Column header="Score">
                                     <template #body="{ data }">
-                                        <InputText size="small" style="width: 40px;" v-model="data.score" @input="updateScore(data.id, data.score, 'member')" />
+                                        <InputText size="small"
+                                                style="width: 40px;"
+                                                v-model="data.score"
+                                                @input="updateScore(data.id, data.score, 'member')" />
                                     </template>
                                 </Column>
+
                                  <!-- From Column -->
                                 <Column header="From">
                                     <template #body="{ data }">
@@ -170,15 +186,21 @@ onMounted(() => {
                                 <Column field="phone" header="Phone Number"></Column>
                                 <Column field="email" header="Email"></Column>
                                 <Column header="Attended?">
-                                    <template #body="{ data }">
-                                        <input type="checkbox" v-model="data.attended" @change="updateAttendance(data.id, data.attended, 'guest')" />
-                                    </template>
-                                </Column>
-                                <Column header="Score">
-                                    <template #body="{ data }">
-                                        <InputText size="small" style="width: 40px;" v-model="data.score" @input="updateScore(data.id, data.score, 'guest')" />
-                                    </template>
-                                </Column>
+                                <template #body="{ data }">
+                                    <input type="checkbox"
+                                        v-model="data.attended"
+                                        @change="handleAttendanceChange(data)" />
+                                </template>
+                            </Column>
+                            <Column header="Score">
+                                <template #body="{ data }">
+                                    <InputText size="small"
+                                            style="width: 40px;"
+                                            v-model="data.score"
+                                            @input="updateScore(data.id, data.score, 'guest')" />
+                                </template>
+                            </Column>
+
                                  <!-- From Column -->
                                 <Column header="From">
                                     <template #body="{ data }">
