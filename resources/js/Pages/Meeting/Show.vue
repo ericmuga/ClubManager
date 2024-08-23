@@ -4,38 +4,92 @@ import { ref,computed,onMounted } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Toolbar from 'primevue/toolbar';
+import PieChart from '@/Components/PieChart.vue';
+import Swal from 'sweetalert2';
+import { swal } from 'sweetalert2/dist/sweetalert2.all';
 
 const props=defineProps({meeting:Object,members:Object,guests:Object,meeting_lines:Object});
 const membersArray=ref([...props.members]);
 const guestsArray=ref([...props.guests]);
-const handleAttendanceChange = (data,userType) => {
-    // Automatically update the score based on the checkbox state
-    data.score = data.attended ? 1 : 0;
-    // Call your existing method to handle the attendance update
-    updateAttendance(data.id, data.attended, userType);
-    // Optionally, call your update score method if you want to save it immediately
-    updateScore(data.id, data.score, userType);
+const membersInMeeting = props.meeting_lines.filter(line => line.user_type === 'member');
+
+const totalMembers = membersArray.value.length;
+const attendedMembers = membersInMeeting.filter(line => line.score > 0).length;
+const absentMembers = totalMembers - attendedMembers;
+
+const membersAttendanceChartData = ref({
+  labels: ['Attended', 'Absent'],
+  datasets: [
+    {
+      label: 'Members Attendance',
+      data: [attendedMembers, absentMembers],
+      backgroundColor: ['#36A2EB', '#FF6384'],
+    },
+  ],
+});
+
+const guestsVsMembersChartData = ref({
+  labels: ['Members', 'Guests'],
+  datasets: [
+    {
+      label: 'Guests vs Members',
+      data: [membersArray.value.length, guestsArray.value.length],
+      backgroundColor: ['#4BC0C0', '#FFCE56'],
+    },
+  ],
+});
+const handleAttendanceChange = (data, userType) => {
+    // If not attended, mark them as attended and trigger SweetAlert
+    if (!data.attended) {
+        data.attended = true;
+        data.score = 1; // Automatically update the score
+        updateAttendance(data.id, data.attended, userType);
+        updateScore(data.id, data.score, userType);
+
+        // Show success alert and clear search input after confirming
+        Swal.fire({
+            icon: 'success',
+            title: 'Attendance marked!',
+            text: `${data.name} has been marked as attended.`,
+        }).then(() => {
+            clearSearchInput(); // Clear search input
+            focusSearchInput(); // Refocus on search input
+        });
+    }
 };
 
+const clearSearchInput = () => {
+    searchMember = '';  // Clear member search input
+    searchGuest = '';   // Clear guest search input
+};
 
 const updateAttendance = (id, attended, userType) => {
     const score = attended ? '1' : '0'; // Score is sent as a string
 
     axios.post(route('meetings.attend'), {
-                userId: id,
-                userType,
-                score,
-                attendedFrom: '18:00', // Replace with actual value if applicable
-                attendedTo: '20:00',   // Replace with actual value if applicable
-                meeting_id:props.meeting.id /* Replace with actual meeting ID */
-            })
-            .then(response => {
-                console.log('Attendance updated successfully', response.data);
-                focusSearchInput()
-            })
-            .catch(error => {
-                console.error('Error updating attendance', error);
-            });
+            userId: id,
+            userType,
+            score,
+            attendedFrom: '18:00', // Replace with actual value if applicable
+            attendedTo: '20:00',   // Replace with actual value if applicable
+            meeting_id: props.meeting.id // Replace with actual meeting ID
+        })
+        .then(response => {
+            console.log('Attendance updated successfully', response.data);
+        })
+        .catch(error => {
+            console.error('Error updating attendance', error);
+        });
+};
+
+
+
+const focusSearchInput = () => {
+    // Automatically focus the search input after attendance is updated
+    const searchInput = document.querySelector('input[placeholder="Search"]');
+    if (searchInput) {
+        searchInput.focus();
+    }
 };
 
 const updateScore = (id, score, userType, attendedFrom, attendedTo) => {
@@ -57,16 +111,66 @@ const updateScore = (id, score, userType, attendedFrom, attendedTo) => {
 };
 const searchMember=ref('')
 const searchGuest=ref('')
-const filterUsers = (searchTerm, userArray) => {
+const filterUsers = (searchTerm, userArray, userType) => {
     const lowercasedSearchTerm = searchTerm.toLowerCase();
-    return userArray.value.filter(user =>
-        user.name.toLowerCase().includes(lowercasedSearchTerm) ||
-        user.email.toLowerCase().includes(lowercasedSearchTerm) ||
-        user.phone.toLowerCase().includes(lowercasedSearchTerm)
-    );
+
+    // Find the first matching user who is not already marked as attended
+    const matchedUser = userArray.value.find(user =>
+                (user.name.toLowerCase().includes(lowercasedSearchTerm) ||
+                 user.email.toLowerCase().includes(lowercasedSearchTerm) ||
+                 user.phone.toLowerCase().includes(lowercasedSearchTerm))
+                //  &&
+                // !user.attended
+            );
+
+            // If a matching user is found, mark them as attended
+            if (matchedUser && searchTerm && !matchedUser.attended)
+                {
+                    matchedUser.attended = true;
+                    matchedUser.score = 1; // Automatically set score to 1
+
+
+                    updateAttendance(matchedUser.id, matchedUser.attended, userType);
+                    updateScore(matchedUser.id, matchedUser.score, userType);
+                    showSuccessAlert(matchedUser.name);
+                }
+               else
+                 {
+                    // Swal.fire('Already Marked','User already marked present','info')
+                    // clearSearchInput();
+                    // focusSearchInput();
+                }
+                 // Show SweetAlert
+
+
+            // Return the filtered users for display
+            return userArray.value.filter(user =>
+                user.name.toLowerCase().includes(lowercasedSearchTerm) ||
+                user.email.toLowerCase().includes(lowercasedSearchTerm) ||
+                user.phone.toLowerCase().includes(lowercasedSearchTerm)
+            );
+        };
+
+
+const filteredMembers = computed(() => filterUsers(searchMember.value, membersArray, 'member'));
+const filteredGuests = computed(() => filterUsers(searchGuest.value, guestsArray, 'guest'));
+
+const showSuccessAlert = (userName) => {
+    Swal.fire({
+        title: 'Success!',
+        text: `${userName} marked as attended.`,
+        icon: 'success',
+        timer: 2000
+    }).then(() => {
+        clearSearch();
+    });
 };
-const filteredMembers = computed(() => filterUsers(searchMember.value, membersArray));
-const filteredGuests = computed(() => filterUsers(searchGuest.value, guestsArray));
+
+const clearSearch = () => {
+    searchMember.value = '';
+    searchGuest.value = '';
+};
+
 const initializeUserData = (userArray, userType) => {
     props.meeting_lines.forEach(line => {
         if (line.user_type === userType) {
@@ -81,17 +185,14 @@ const initializeUserData = (userArray, userType) => {
         }
     });
 };
-const focusSearchInput = () => {
-    if (searchMember.value) {
-        searchMember.value.focus();
-    }
-};
+
 
 const value = ref('0'); // Set default tab value to '0'
 
 onMounted(() => {
     initializeUserData(membersArray,'member');
     initializeUserData(guestsArray,'guest');
+    focusSearchInput();
 
 });
 
@@ -227,9 +328,29 @@ onMounted(() => {
                     </TabPanel>
                     <TabPanel value="2">
                         <p class="m-0">
-                            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-                            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-                        </p>
+                            <div class="flex flex-row justify-start gap-4 p-2 m-1">
+                                <!-- <div >
+                                    <h2>Members Pie Chart</h2>
+                                   <PieChart :data="membersChartData" />
+                                </div>
+
+                                <div >
+
+                                    <h2>Guests Pie Chart</h2>
+                                     <PieChart :data="guestsChartData"  />
+                                </div> -->
+                                <div>
+                                    <h2>Guests vs Members Pie Chart</h2>
+                                    <PieChart :data="guestsVsMembersChartData" />
+                                </div>
+
+                                <div>
+                                    <h2>Members Attendance Pie Chart</h2>
+                                      <PieChart :data="membersAttendanceChartData" />
+                                </div>
+
+                            </div>
+                       </p>
                     </TabPanel>
                 </TabPanels>
             </Tabs>

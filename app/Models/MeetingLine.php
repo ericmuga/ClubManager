@@ -10,12 +10,12 @@ class MeetingLine extends Model
     use HasFactory;
     public function meeting()
     {
-        return $this->belongsTo(Meeting::class);
+        return $this->belongsTo(Meeting::class,'meeting_id','id');
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id','id');
     }
 
     protected $guarded =['id'];

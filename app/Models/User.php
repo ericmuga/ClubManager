@@ -62,9 +62,9 @@ class User extends Authenticatable
             return $this->hasMany(Contact::class)->where('type','phone');
         }
 
-        public function meetings()
+        public function meeting_lines()
         {
-            return $this->belongsToMany(Meeting::class);
+            return $this->hasMany(MeetingLine::class,'user_id','id');
         }
 
     }

@@ -9,9 +9,9 @@
                 <span class="text-sm text-gray-500 dark:text-gray-400">{{ m.member_no }}</span>
                 <span class="text-sm text-gray-500 dark:text-gray-400">{{ m.nationality }}</span>
                 <div class="flex mt-4 space-x-3 lg:mt-6">
-                    <!-- <Link :href="route('members.show', m.id)">
+                    <Link :href="route('members.show', m.id)">
                         <Button icon="pi pi-user" class="p-button-rounded p-button-info" />
-                    </Link> -->
+                    </Link>
 
                     <Button icon="pi pi-pencil" class="p-button-rounded p-button-secondary" @click="emitUpdate" />
 

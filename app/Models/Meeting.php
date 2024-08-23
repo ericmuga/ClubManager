@@ -37,15 +37,15 @@ class Meeting extends Model
         'date' => 'datetime',
     ];
 
-    public function members(): BelongsToMany
-    {
-        return $this->belongsToMany(Member::class);
-    }
+    // public function members(): BelongsToMany
+    // {
+    //     return $this->belongsToMany(Member::class);
+    // }
 
-    public function guests(): BelongsToMany
-    {
-        return $this->belongsToMany(Guest::class);
-    }
+    // public function guests(): BelongsToMany
+    // {
+    //     return $this->belongsToMany(Guest::class);
+    // }
 
     public function getDateAttribute($value)
     {

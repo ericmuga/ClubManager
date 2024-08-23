@@ -26,4 +26,6 @@ class Member extends User
         return $query->where('user_type', 'member');
     }
 
+
+
 }

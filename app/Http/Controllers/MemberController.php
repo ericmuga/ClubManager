@@ -78,7 +78,9 @@ class MemberController extends Controller
      */
     public function show(Member $member)
     {
-     //show memeber details
+
+    $meeting_lines=$member->meeting_lines->load('meeting');
+     return inertia('Member/Show',compact('member','meeting_lines'));
     }
 
     /**

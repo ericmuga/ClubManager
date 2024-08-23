@@ -66,7 +66,7 @@ watch(search, debounce(() => {
 {
   membersArray.value=props.members;
 }
-else membersArray.value=membersArray.value.filter(member=>member.name.includes(search.value))
+else membersArray.value=membersArray.value.filter(member=>member.name.toLower.includes(search.value))
 },500))
 
 
@@ -149,8 +149,8 @@ const updateMember=()=>{
                             v-for="member in membersArray"
                             :member="member"
                             :key="member.id"
-                            @click="createOrUpdateMember(member, 'edit')"
                         />
+                            <!-- @click="createOrUpdateMember(member, 'edit')" -->
                   </div>
                 </div>
             </div>
