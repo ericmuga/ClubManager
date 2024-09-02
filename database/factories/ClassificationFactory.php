@@ -17,7 +17,8 @@ class ClassificationFactory extends Factory
     public function definition(): array
     {
         return [
-            //
-        ];
+            'code' => strtoupper($this->faker->unique()->lexify('???')), // Generates a unique 3-letter code
+            'description' => $this->faker->jobTitle, // Generate random job titles as classifications
+    ];
     }
 }

@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-
+use App\Models\Classification;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
@@ -32,7 +32,7 @@ class UserFactory extends Factory
             'gender' => 'M',
             'email_verified_at' => now(),
             'password' => bcrypt('password'), // or use Hash::make('password')
-            'classification_id' => null, // or use a random classification id
+            'classification_id' =>  Classification::factory(), // or use a random classification id
             'avatar' => $this->faker->imageUrl(),
             'remember_token' => Str::random(10),
             'member_no'=>$this->faker->numberBetween(10000,20000),
