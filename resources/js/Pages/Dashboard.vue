@@ -113,30 +113,31 @@ watch([selectedDimension, chartType], updateChart); // Watch for changes in both
 
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Dashboard</h2>
+      <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Member Dashboard</h2>
     </template>
 
-    <div class="py-12">
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-      <!-- <div class="p-5 m-2 text-center"> -->
-        <div class="flex flex-row gap-3">
-          <select v-model="selectedDimension">
-            <option value="date">Joiners by Date</option>
-            <option value="classification">Classification</option>
-            <option value="nationality">Nationality</option>
-            <option value="status">Status</option>
-            <option value="month">Joiners by Month</option>
-          </select>
+       <div class="items-center w-auto text-center place-items-center ">
+        <div class="flex flex-col items-center justify-center h-full p-6 m-4">
+            <div class="flex flex-row gap-2 text center ">
+                    <select v-model="selectedDimension">
+                            <option value="date">Joiners by Date</option>
+                            <option value="classification">Classification</option>
+                            <option value="nationality">Nationality</option>
+                            <option value="status">Status</option>
+                            <option value="month">Joiners by Month</option>
+                        </select>
 
-          <label for="chartType">Select Chart Type:</label>
-          <select v-model="chartType">
-            <option value="bar">Bar Chart</option>
-            <option value="pie">Pie Chart</option>
-          </select>
+
+                        <select v-model="chartType">
+                            <option value="bar">Bar Chart</option>
+                            <option value="pie">Pie Chart</option>
+                        </select>
+            </div>
+            <canvas id="chart" class="max-w-screen-sm max-h-72"></canvas>
         </div>
 
-        <canvas id="chart"></canvas>
-      </div>
+
+
     </div>
   </AuthenticatedLayout>
 </template>
