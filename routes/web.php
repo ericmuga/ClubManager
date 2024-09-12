@@ -5,7 +5,9 @@ use App\Http\Controllers\{MemberController,
                           SettingController,
                           TemplateController,
                           MeetingController,
-                          ClubSettingController, DashboardController};
+                          ClubSettingController,
+                          DashboardController,
+                        EntryTypeController};
 use GuzzleHttp\Middleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -59,6 +61,14 @@ Route::middleware('auth')->group(function ()
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings/{id}', [SettingController::class, 'update'])->name('settings.update');
+
+});
+
+Route::middleware('auth')->group(function(){
+       Route::get('/entry-types', [EntryTypeController::class, 'index']);      // Get all entry types
+Route::post('/entry-types', [EntryTypeController::class, 'store']);     // Add new entry type
+Route::put('/entry-types/{id}', [EntryTypeController::class, 'update']); // Update entry type by id
+Route::delete('/entry-types/{id}', [EntryTypeController::class, 'destroy']); // Delete entry type by id
 });
 
 require __DIR__.'/auth.php';
@@ -101,3 +111,6 @@ Route::resource('meetings', App\Http\Controllers\MeetingController::class)->only
 Route::resource('club-settings', App\Http\Controllers\ClubSettingController::class)->only('index', 'store', 'show');
 
 Route::resource('meetings', App\Http\Controllers\MeetingController::class)->only('index', 'store', 'show');
+
+
+

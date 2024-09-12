@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Meeting;
 use App\Models\User;
+use App\Models\EntryType;
+use Database\Factories\EntryTypeFactory;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,6 +17,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         Meeting::factory(10)->create();
+        EntryType::factory(10)->create();
 
 
         User::factory()->count(50)->create();

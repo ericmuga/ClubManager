@@ -192,7 +192,7 @@ const meeting_types = [{ code: 'Physical' }, { code: 'GoogleMeet' }, { code: 'Zo
                         v-model:search="search"
                       />
                 <div>
-                    <DataTable :value="meetingsArray">
+                    <DataTable :value="meetingsArray" sortMode="multiple" tableStyle="min-width: 50rem">
                         <Column field="meeting_no" header="Meeting Number" />
                         <Column field="type" header="Type" />
                         <!-- <Column field="description" header="Description" /> -->
@@ -202,9 +202,9 @@ const meeting_types = [{ code: 'Physical' }, { code: 'GoogleMeet' }, { code: 'Zo
                         <Column field="host" header="Host" />
                          <Column header="Actions">
                             <template #body="slotProps">
-                            <Button icon="pi pi-pencil" class="p-button-rounded p-button-info p-mr-2" @click="createOrUpdateMeeting(slotProps.data)" />
-                            <Button icon="pi pi-trash" class="p-button-rounded p-button-danger p-mr-2" @click="confirmDeleteMeeting(slotProps.data)" />
-                            <Button icon="pi pi-eye" class="p-button-rounded p-button-secondary" @click="viewMeeting(slotProps.data)" />
+                            <Button icon="pi pi-pencil" severity="info" text rounded  @click="createOrUpdateMeeting(slotProps.data)" />
+                            <Button icon="pi pi-trash" severity="danger" text rounded  @click="confirmDeleteMeeting(slotProps.data)" />
+                            <Button icon="pi pi-eye" severity="info" text rounded  @click="viewMeeting(slotProps.data)" />
                             </template>
                         </Column>
                         <!-- <Column field="uuid" header="UUID" /> -->

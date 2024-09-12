@@ -8,6 +8,7 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
 // primevue components
 import PrimeVue from 'primevue/config';
+import ToastService from 'primevue/toastservice';
 import Aura from '@primevue/themes/aura';
 import 'primeicons/primeicons.css';
 import MultiSelect from 'primevue/multiselect';
@@ -29,7 +30,12 @@ import TabList from 'primevue/tablist';
 import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
-///end of primevue components
+
+import Accordion from 'primevue/accordion';
+import AccordionPanel from 'primevue/accordionpanel';
+import AccordionHeader from 'primevue/accordionheader';
+import AccordionContent from 'primevue/accordioncontent';
+
 
 const appName = import.meta.env.VITE_APP_NAME || 'Club Manager';
 
@@ -40,11 +46,14 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
+
             .use(PrimeVue, {
                 theme: {
                     preset: Aura
                 }
              })
+             .use(ToastService)
+
             .component('ToolBar',Toolbar)
             .component('Checkbox',Checkbox)
             .component('Button',Button)
@@ -64,6 +73,10 @@ createInertiaApp({
             .component('TabList',TabList)
             .component('TabPanels',TabPanels)
             .component('TabPanel',TabPanel)
+            .component('Accordion',Accordion)
+            .component('AccordionPanel',AccordionPanel)
+            .component('AccordionHeader',AccordionHeader)
+            .component('AccordionContent',AccordionContent)
             .mount(el);
     },
     progress: {

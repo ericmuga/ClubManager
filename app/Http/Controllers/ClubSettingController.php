@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ClubSettingStoreRequest;
 use App\Http\Requests\ClubSettingUpdateRequest;
 use App\Models\ClubSetting;
+use App\Models\EntryType;
 use Illuminate\Http\{Request,RedirectResponse};
 use Illuminate\Support\Facades\{Storage,Log};
 use App\Traits\UploadsFiles;
@@ -22,9 +23,14 @@ class ClubSettingController extends Controller
     public function index(Request $request): Response
     {
         $clubSetting= ClubSetting::first();
+        // $entry_types=[];
+
         return Inertia::render('ClubSetting/Show',compact('clubSetting'));
 
     }
+
+
+
 
 
 

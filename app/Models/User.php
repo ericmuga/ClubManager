@@ -67,4 +67,9 @@ class User extends Authenticatable
             return $this->hasMany(MeetingLine::class,'user_id','id');
         }
 
+        public function entries()
+        {
+            return $this->belongsTo(Entry::class);
+        }
+
     }

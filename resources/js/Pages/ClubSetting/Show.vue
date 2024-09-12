@@ -3,23 +3,105 @@
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head,useForm } from '@inertiajs/vue3';
-import { ref,onMounted} from 'vue';
+import { ref,onMounted,reactive} from 'vue';
 // import { useForm } from '@inertiajs/vue3;
 import { currencies } from '@/Composables/useCountries';
 import Swal from 'sweetalert2';
+import Modal from '@/Components/Modal.vue';
+import axios from 'axios';
+import { useToast } from 'primevue/usetoast';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+
+
+const toast = useToast();
+
+const entryTypes = ref([]); // Entry types data
+
+
+const modalMode = ref('add'); // Track modal mode (add or edit)
+const entryTypeForm = reactive({
+  id: null,
+  code: '',
+  description: ''
+});
+
+// Fetch all entry types from backend
+const fetchEntryTypes = async () => {
+  try {
+    const response = await axios.get('entry-types');
+    entryTypes.value = response.data;
+  } catch (error) {
+    console.error('Failed to fetch entry types:', error);
+  }
+};
+
+// Open modal for adding or editing
+const openModal = (entryType = null) => {
+  if (entryType) {
+    modalMode.value = 'edit';
+    entryTypeForm.id = entryType.id;
+    entryTypeForm.code = entryType.code;
+    entryTypeForm.description = entryType.description;
+  } else {
+    modalMode.value = 'add';
+    entryTypeForm.id = null;
+    entryTypeForm.code = '';
+    entryTypeForm.description = '';
+  }
+  showModal.value = true;
+};
+
+// Close modal
+const closeModal = () => {
+  showModal.value = false;
+};
+
+// Save entry type (add or edit)
+const saveEntryType = async () => {
+  try {
+    if (modalMode.value === 'add') {
+      await axios.post('entry-types', entryTypeForm);
+      toast.add({ severity: 'success', summary: 'Success', detail: 'Entry Type added' });
+    } else {
+      await axios.put(`entry-types/${entryTypeForm.id}`, entryTypeForm);
+      toast.add({ severity: 'success', summary: 'Success', detail: 'Entry Type updated' });
+    }
+    fetchEntryTypes();
+    closeModal();
+  } catch (error) {
+    console.error('Failed to save entry type:', error);
+  }
+};
+
+// Delete entry type
+const deleteEntryType = async (id) => {
+  try {
+    await axios.delete(`entry-types/${id}`);
+    toast.add({ severity: 'success', summary: 'Deleted', detail: 'Entry Type deleted' });
+    fetchEntryTypes();
+  } catch (error) {
+    console.error('Failed to delete entry type:', error);
+  }
+};
+
+// Fetch data on component mount
+
 
 const props= defineProps({
 
-  clubSetting:Object
+  clubSetting:Object,
+
 
 });
 const state=ref('add');
+
 onMounted(()=>{
     // console.log(props.clubSetting)
     if(props.clubSetting){
     state.value='update'
     }
-
+    fetchEntryTypes();
 })
 
 const form = useForm({
@@ -193,7 +275,49 @@ const createSetting = () => {
 
                                 </TabPanel>
                                 <TabPanel value="1">
+                                     <div class="card">
+                                        <Accordion value="0">
+                                            <AccordionPanel value="0">
+                                                <AccordionHeader>Entry Types</AccordionHeader>
+                                                <AccordionContent>
+                                                    <Button label="Add"  icon="pi pi-plus" @click="openModal()" />
 
+                                                    <!-- Entry Types Table -->
+                                                  <DataTable :value="entryTypes" responsiveLayout="scroll" sortMode="multiple" tableStyle="min-width: 50rem">
+                                                    <Column field="code" header="Code" />
+                                                    <Column field="description" header="Description" />
+
+                                                    <Column header="Actions">
+                                                        <template #body="slotProps">
+                                                            <Button icon="pi pi-pencil" severity="info" text rounded @click="openModal(slotProps.data)" />
+                                                            <Button icon="pi pi-trash" severity="danger" text rounded @click="deleteEntryType(slotProps.data.id)" />
+                                                        </template>
+                                                    </Column>
+                                                </DataTable>
+
+
+                                                </AccordionContent>
+                                            </AccordionPanel>
+                                            <AccordionPanel value="1">
+                                                <AccordionHeader>Header II</AccordionHeader>
+                                                <AccordionContent>
+                                                    <p class="m-0">
+                                                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
+                                                        ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                                                    </p>
+                                                </AccordionContent>
+                                            </AccordionPanel>
+                                            <AccordionPanel value="2">
+                                                <AccordionHeader>Header III</AccordionHeader>
+                                                <AccordionContent>
+                                                    <p class="m-0">
+                                                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
+                                                        qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                                                    </p>
+                                                </AccordionContent>
+                                            </AccordionPanel>
+                                        </Accordion>
+                                    </div>
                                 </TabPanel>
                                 <TabPanel value="2">
 
@@ -212,7 +336,29 @@ const createSetting = () => {
 
 
 </AuthenticatedLayout>
+  <Modal :show="showModal" @close="showModal=false">
+            <template #header>
+                <h2>{{ modalMode === 'add' ? 'Add' : 'Edit' }} Entry Type</h2>
+            </template>
+            <template #default>
+                <form @submit.prevent="saveEntryType">
+                 <div class="flex flex-col w-full p-3">
+                     <div class="flex items-center justify-between gap-4 my-2 ">
+                        <label for="code">Code</label>
+                        <InputText id="code" v-model="entryTypeForm.code" required />
 
+                    </div>
+                    <hr/>
+                    <div class="flex items-center justify-between gap-4 my-2">
+                        <label for="description">Description</label>
+                        <InputText id="description" size="large" type="text" v-model="entryTypeForm.description" required />
+                    </div>
+                    <Button type="submit" label="Save" />
+                 </div>
+
+                </form>
+            </template>
+            </Modal>
 
 
 
